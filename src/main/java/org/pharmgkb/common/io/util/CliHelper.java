@@ -17,6 +17,8 @@ import org.apache.commons.cli.Options;
 
 
 /**
+ * This is a helper class for command line utilities to deal with command line arguments.
+ *
  * @author Mark Woon
  */
 public class CliHelper {
@@ -259,14 +261,14 @@ public class CliHelper {
   /**
    * Checks whether the arguments were parsed successfully.
    */
-  boolean hasError() {
+  public boolean hasError() {
     return m_error != null;
   }
 
   /**
    * Gets the error that occured while parsing arguments.
    */
-  String getError() {
+  public String getError() {
     return m_error;
   }
 
