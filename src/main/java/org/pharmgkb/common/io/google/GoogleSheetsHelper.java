@@ -23,6 +23,7 @@ import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
 import com.google.gdata.data.spreadsheet.SpreadsheetFeed;
 import com.google.gdata.data.spreadsheet.WorksheetEntry;
 import com.google.gdata.util.ServiceException;
+import com.google.gdata.util.common.base.Joiner;
 
 
 /**
@@ -102,6 +103,8 @@ public class GoogleSheetsHelper implements AutoCloseable {
     SpreadsheetEntry spreadsheet = m_sheetsService.getEntry(url, SpreadsheetEntry.class);
     // get first worksheet
     WorksheetEntry worksheet = spreadsheet.getDefaultWorksheet();
+    int colCount = worksheet.getColCount();
+    Joiner tsvJoiner = Joiner.on("\t").useForNull("");
 
     // fetch the cell feed of the worksheet
     URL cellFeedUrl = worksheet.getCellFeedUrl();
@@ -110,6 +113,7 @@ public class GoogleSheetsHelper implements AutoCloseable {
     try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(tsvFile))) {
       int curRow = 1;
       int curCol = 1;
+      String[] currentLine = new String[colCount];
       for (CellEntry cell : cellFeed.getEntries()) {
         Matcher m = sf_rcPattern.matcher(cell.getId());
         if (!m.matches()) {
@@ -119,15 +123,16 @@ public class GoogleSheetsHelper implements AutoCloseable {
         int col = Integer.parseInt(m.group(2));
 
         while (curRow < row) {
+          writer.write(tsvJoiner.join(currentLine));
           writer.println();
+          currentLine = new String[colCount];
           curRow += 1;
           curCol = 1;
         }
         while (curCol < col) {
-          writer.print("\t");
           curCol += 1;
         }
-        writer.print(cell.getCell().getValue());
+        currentLine[col-1] = cell.getCell().getValue();
       }
       writer.println();
     }
