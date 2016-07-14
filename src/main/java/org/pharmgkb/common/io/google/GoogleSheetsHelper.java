@@ -134,6 +134,7 @@ public class GoogleSheetsHelper implements AutoCloseable {
         }
         currentLine[col-1] = cell.getCell().getValue();
       }
+      writer.write(tsvJoiner.join(currentLine));
       writer.println();
     }
   }
