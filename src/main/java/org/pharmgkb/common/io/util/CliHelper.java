@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.function.Function;
 import javax.annotation.Nonnull;
 import com.google.common.collect.Lists;
 import org.apache.commons.cli.CommandLine;
@@ -155,6 +156,21 @@ public class CliHelper {
     }
   }
 
+  /**
+   * Parse arguments and execute the function.
+   * This helps enforce proper exit codes.
+   */
+  public void execute(String[] args, Function<CliHelper, Integer> function) {
+
+    if (!parse(args)) {
+      if (isHelpRequested()) {
+        System.exit(0);
+      }
+      System.exit(1);
+    }
+    System.exit(function.apply(this));
+  }
+
 
   /**
    * Checks whether the specified option exists.
@@ -164,7 +180,10 @@ public class CliHelper {
   }
 
   /**
-   * Gets the String value for the given option.
+   * Gets the first String value, if any, for the given option.
+   *
+   * @param opt the name of the option
+   * @return Value of the argument if option is set, and has an argument, otherwise null.
    */
   public String getValue(String opt) {
     return m_commandLine.getOptionValue(opt);
