@@ -94,15 +94,78 @@ public class GoogleSheetsHelper implements AutoCloseable {
   }
 
   /**
-   * Exports sheet with the specified ID to TSV.
+   * Exports the default sheet with the specified ID to TSV.
    *
    * @param url URL from {@link SpreadsheetEntry#getId()} ()}
    */
   public void exportToTsv(URL url, Path tsvFile) throws IOException, ServiceException {
+
     // fetch sheet
     SpreadsheetEntry spreadsheet = m_sheetsService.getEntry(url, SpreadsheetEntry.class);
-    // get first worksheet
-    WorksheetEntry worksheet = spreadsheet.getDefaultWorksheet();
+    // use default worksheet
+    exportToTsv(spreadsheet.getDefaultWorksheet(), tsvFile);
+
+  }
+
+  /**
+   * Exports sheet with the specified ID to TSV.
+   *
+   * @param fileId a file Id from Google Drive
+   * @param sheetNumber sheet number (starting at 0)
+   */
+  public void exportToTsv(String fileId, Path tsvFile, int sheetNumber) throws IOException, ServiceException {
+    exportToTsv(new URL("https://spreadsheets.google.com/feeds/spreadsheets/" + fileId), tsvFile, sheetNumber);
+  }
+
+  /**
+   * Exports the specified sheet with the specified ID to TSV.
+   *
+   * @param url URL from {@link SpreadsheetEntry#getId()} ()}
+   * @param sheetNumber sheet number (starting at 0)
+   */
+  public void exportToTsv(URL url, Path tsvFile, int sheetNumber) throws IOException, ServiceException {
+
+    // fetch sheet
+    SpreadsheetEntry spreadsheet = m_sheetsService.getEntry(url, SpreadsheetEntry.class);
+    List<WorksheetEntry> sheets = spreadsheet.getWorksheets();
+    if (sheetNumber >= sheets.size()) {
+      throw new IOException("No sheet " + sheetNumber + ", only has " + sheets.size() + " sheets");
+    }
+    exportToTsv(sheets.get(sheetNumber), tsvFile);
+  }
+
+  /**
+   * Exports sheet with the specified ID to TSV.
+   *
+   * @param fileId a file Id from Google Drive
+   * @param sheetName sheet name
+   */
+  public void exportToTsv(String fileId, Path tsvFile, String sheetName) throws IOException, ServiceException {
+    exportToTsv(new URL("https://spreadsheets.google.com/feeds/spreadsheets/" + fileId), tsvFile, sheetName);
+  }
+
+  /**
+   * Exports the specified sheet with the specified ID to TSV.
+   *
+   * @param url URL from {@link SpreadsheetEntry#getId()} ()}
+   * @param sheetName sheet name
+   */
+  public void exportToTsv(URL url, Path tsvFile, String sheetName) throws IOException, ServiceException {
+
+    // fetch sheet
+    SpreadsheetEntry spreadsheet = m_sheetsService.getEntry(url, SpreadsheetEntry.class);
+    List<WorksheetEntry> sheets = spreadsheet.getWorksheets();
+    for (WorksheetEntry sheet : sheets) {
+      if (sheet.getTitle().getPlainText().equals(sheetName)) {
+        exportToTsv(sheet, tsvFile);
+        break;
+      }
+    }
+  }
+
+  private void exportToTsv(@Nonnull WorksheetEntry worksheet, @Nonnull Path tsvFile) throws IOException,
+      ServiceException {
+
     int colCount = worksheet.getColCount();
     Joiner tsvJoiner = Joiner.on("\t").useForNull("");
 
