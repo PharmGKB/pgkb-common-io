@@ -18,7 +18,7 @@ This package contains common IO code shared among all PharmGKB projects.
   <dependency>
     <groupId>org.pharmgkb</groupId>
     <artifactId>pgkb-common-io</artifactId>
-    <version>0.1</version>
+    <version>0.1.5</version>
   </dependency>
   ...
 </dependencies>
