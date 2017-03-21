@@ -4,7 +4,7 @@ plugins {
   id 'com.github.kt3k.coveralls' version '2.6.3'
   id 'osgi'
   id 'signing'
-  id 'com.jfrog.bintray' version '1.6'
+  id 'com.jfrog.bintray' version '1.7.3'
   id 'maven-publish'
 }
 
@@ -58,9 +58,9 @@ dependencies {
       [group: 'com.google.apis', name: 'google-api-services-drive', version: 'v3-rev23-1.21.0'],
       [group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'],
       [group: 'com.google.gdata', name: 'core', version: '1.47.1'],
-      [group: 'com.google.guava', name: 'guava', version: '19.0'],
+      [group: 'com.google.guava', name: 'guava', version: '21.0'],
       [group: 'com.google.http-client', name: 'google-http-client-gson', version: '1.21.0'],
-      [group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'],
+      [group: 'org.slf4j', name: 'slf4j-api', version: '1.7.24'],
   )
 
   testCompile(
