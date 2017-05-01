@@ -15,6 +15,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.ThreadSafe;
 import javax.xml.bind.DatatypeConverter;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
@@ -31,6 +32,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Mark Woon
  */
+@ThreadSafe
 public class GoogleApiHelper implements AutoCloseable {
   private static final Pattern sf_privateKeyPattern =
       Pattern.compile("-----BEGIN .*?PRIVATE KEY-----(.*)-----END .*?PRIVATE KEY-----");
@@ -100,7 +102,7 @@ public class GoogleApiHelper implements AutoCloseable {
    * Strips header and footer from key and concatenates it to a single line.
    */
   static String stripKey(String key) {
-    key = key.replaceAll("\\r|\\n", "");
+    key = key.replaceAll("[\\r\\n]", "");
     Matcher m = sf_privateKeyPattern.matcher(key);
     if (m.find()) {
       return m.group(1);
