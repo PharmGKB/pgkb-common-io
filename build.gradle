@@ -53,13 +53,16 @@ repositories {
 //noinspection GroovyAssignabilityCheck
 dependencies {
   compile (
-      [group: 'commons-cli', name: 'commons-cli', version: '1.4.0'],
+      [group: 'commons-cli', name: 'commons-cli', version: '1.4'],
+      [group: 'commons-io', name: 'commons-io', version: '2.5'],
       [group: 'com.google.api-client', name: 'google-api-client', version: '1.22.0'],
       [group: 'com.google.apis', name: 'google-api-services-drive', version: 'v3-rev71-1.22.0'],
       [group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'],
       [group: 'com.google.gdata', name: 'core', version: '1.47.1'],
       [group: 'com.google.guava', name: 'guava', version: '23.0'],
       [group: 'com.google.http-client', name: 'google-http-client-gson', version: '1.22.0'],
+      [group: 'org.apache.commons', name: 'commons-lang3', version: '3.6'],
+      [group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'],
       [group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'],
   )
 

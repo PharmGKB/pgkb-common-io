@@ -17,8 +17,11 @@
     <orderEntry type="library" exported="" scope="TEST" name="JUnit" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="Commons-testing" level="project" />
     <orderEntry type="library" exported="" name="Commons-cli" level="project" />
+    <orderEntry type="library" exported="" name="Commons-io" level="project" />
+    <orderEntry type="library" exported="" name="Commons-lang3" level="project" />
     <orderEntry type="library" exported="" name="Google API Services" level="project" />
     <orderEntry type="library" exported="" name="Google APIs" level="project" />
     <orderEntry type="library" exported="" name="Google Data" level="project" />
+    <orderEntry type="library" exported="" name="HttpComponents Client" level="project" />
   </component>
 </module>
