@@ -1296,7 +1296,7 @@ public class CsvReader implements AutoCloseable {
 
         if (userSettings.TrimWhitespace && !startedWithQualifier) {
           while (lastLetter >= 0
-              && (columnBuffer.Buffer[lastLetter] == Letters.SPACE || columnBuffer.Buffer[lastLetter] == Letters.SPACE)) {
+              && (columnBuffer.Buffer[lastLetter] == Letters.SPACE || columnBuffer.Buffer[lastLetter] == Letters.TAB)) {
             lastLetter--;
           }
         }
