@@ -90,7 +90,7 @@ public class StreamUtils {
 
 
   /**
-   * Copies contents of a {@code url} to a {@code file}.
+   * Copies contents of a {@code url} to a {@code file}.  If {@code file} already exists, it will be overwritten.
    *
    * Use this instead of {@link FileUtils#copyURLToFile(URL, File)} when you need to follow redirects.
    */
@@ -99,9 +99,13 @@ public class StreamUtils {
     try (CloseableHttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build()) {
       HttpGet httpget = new HttpGet(url);
       try (CloseableHttpResponse response = httpClient.execute(httpget)) {
+        // save to file even if there's an error so we can see what the error is
         try (InputStream in = response.getEntity().getContent();
             OutputStream out = Files.newOutputStream(file)) {
           IOUtils.copy(in, out);
+        }
+        if (response.getStatusLine().getStatusCode() != 200) {
+          throw new IOException("Error downloading " + url + ": " + response.getStatusLine());
         }
       }
     }
