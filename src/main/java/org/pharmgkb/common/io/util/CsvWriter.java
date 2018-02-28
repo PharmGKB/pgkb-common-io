@@ -86,14 +86,23 @@ public class CsvWriter implements AutoCloseable {
   }
 
   /**
-   * Creates a {@link CsvWriter CsvWriter} object using a file
-   * as the data destination.&nbsp;Uses a comma as the column delimiter and
-   * ISO-8859-1 as the {@link java.nio.charset.Charset Charset}.
+   * Creates a {@link CsvWriter CsvWriter} object using a file as the data destination.
+   * Uses a comma as the column delimiter and {@code ISO-8859-1} as the {@link java.nio.charset.Charset Charset}.
    *
    * @param fileName The path to the file to output the data.
    */
   public CsvWriter(String fileName) {
     this(fileName, Letters.COMMA, Charset.forName("ISO-8859-1"));
+  }
+
+  /**
+   * Creates a {@link CsvWriter CsvWriter} object using a {@Writer} as the data destination.
+   * Uses a comma as the column delimiter.
+   *
+   * @param writer The writer to write the column delimited data to.
+   */
+  public CsvWriter(Writer writer) {
+    this(writer, Letters.COMMA);
   }
 
   /**
