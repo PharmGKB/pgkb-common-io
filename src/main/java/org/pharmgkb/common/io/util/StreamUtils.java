@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
@@ -96,17 +97,26 @@ public class StreamUtils {
    */
   public static void copyUrlToFile(@Nonnull String url, @Nonnull Path file) throws IOException {
 
-    try (CloseableHttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build()) {
-      HttpGet httpget = new HttpGet(url);
-      try (CloseableHttpResponse response = httpClient.execute(httpget)) {
-        // save to file even if there's an error so we can see what the error is
-        try (InputStream in = response.getEntity().getContent();
-            OutputStream out = Files.newOutputStream(file)) {
-          IOUtils.copy(in, out);
+    if (url.startsWith("http://") || url.startsWith("https://")) {
+      try (CloseableHttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build()) {
+        HttpGet httpget = new HttpGet(url);
+        try (CloseableHttpResponse response = httpClient.execute(httpget)) {
+          // save to file even if there's an error so we can see what the error is
+          try (InputStream in = response.getEntity().getContent();
+               OutputStream out = Files.newOutputStream(file)) {
+            IOUtils.copy(in, out);
+          }
+          if (response.getStatusLine().getStatusCode() != 200) {
+            throw new IOException("Error downloading " + url + ": " + response.getStatusLine());
+          }
         }
-        if (response.getStatusLine().getStatusCode() != 200) {
-          throw new IOException("Error downloading " + url + ": " + response.getStatusLine());
-        }
+      }
+    } else {
+      URL ftpUrl = new URL(url);
+      URLConnection conn = ftpUrl.openConnection();
+      try (InputStream in = conn.getInputStream();
+           OutputStream out = Files.newOutputStream(file)) {
+        IOUtils.copy(in,out);
       }
     }
   }
