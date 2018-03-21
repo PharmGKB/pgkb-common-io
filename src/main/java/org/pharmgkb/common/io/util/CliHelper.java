@@ -26,6 +26,10 @@ public class CliHelper {
   private static final String sf_verboseFlag = "verbose";
   private static final String sf_helpFlag = "help";
   private String m_name;
+  /**
+   * Shadow collection of options with nothing required so that we can check if help was requested without hitting a
+   * parse excpetion.
+   */
   private Options m_helpOptions = new Options();
   private Options m_options = new Options();
   private CommandLine m_commandLine;
@@ -56,7 +60,11 @@ public class CliHelper {
     if (option.getArgName().equals("h") || option.getArgName().equals("v")) {
       throw new IllegalArgumentException("-h and -v are reserved arguments");
     }
-    m_helpOptions.addOption(option);
+    if (option.isRequired()) {
+      m_helpOptions.addOption(new Option(option.getOpt(), option.getLongOpt(), option.hasArg(), option.getDescription()));
+    } else {
+      m_helpOptions.addOption(option);
+    }
     m_options.addOption(option);
     return this;
   }
