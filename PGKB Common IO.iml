@@ -21,7 +21,7 @@
     <orderEntry type="library" exported="" name="Commons-io" level="project" />
     <orderEntry type="library" exported="" name="Commons-lang3" level="project" />
     <orderEntry type="library" exported="" name="Google API Services" level="project" />
-    <orderEntry type="library" exported="" name="Google APIs" level="project" />
+    <orderEntry type="library" exported="" name="Google API Client" level="project" />
     <orderEntry type="library" exported="" name="Google Data" level="project" />
     <orderEntry type="library" exported="" name="HttpComponents Client" level="project" />
   </component>
