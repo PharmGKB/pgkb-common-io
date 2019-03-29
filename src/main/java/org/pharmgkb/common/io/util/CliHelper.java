@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import javax.annotation.Nonnull;
@@ -201,7 +202,11 @@ public class CliHelper {
    * Gets the String values for the given option.
    */
   public List<String> getValues(String opt) {
-    return Lists.newArrayList(m_commandLine.getOptionValues(opt));
+    String[] vals = m_commandLine.getOptionValues(opt);
+    if (vals == null) {
+      return Collections.emptyList();
+    }
+    return Lists.newArrayList(vals);
   }
 
   /**
