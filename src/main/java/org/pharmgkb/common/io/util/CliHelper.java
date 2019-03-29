@@ -88,7 +88,7 @@ public class CliHelper {
   }
 
   /**
-   * Add a required option that takes an argument.
+   * Adds an option that takes a required argument.
    */
   public CliHelper addOption(@Nonnull String shortName, String longName, @Nonnull String description,
       boolean isOptionRequired, @Nonnull String argName) {
@@ -96,7 +96,7 @@ public class CliHelper {
   }
 
   /**
-   * Add a required option that takes arguments.
+   * Adds an option that takes arguments.
    *
    * @param numArgs 0 if argument(s) are optional, otherwise the number of expected arguments
    */
