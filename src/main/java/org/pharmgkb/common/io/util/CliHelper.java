@@ -16,6 +16,7 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.commons.lang3.StringUtils;
 
 
 /**
@@ -195,7 +196,7 @@ public class CliHelper {
    * @return Value of the argument if option is set, and has an argument, otherwise null.
    */
   public String getValue(String opt) {
-    return m_commandLine.getOptionValue(opt);
+    return StringUtils.stripToNull(m_commandLine.getOptionValue(opt));
   }
 
   /**
