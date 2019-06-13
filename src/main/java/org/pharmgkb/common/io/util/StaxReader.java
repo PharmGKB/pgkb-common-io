@@ -1,23 +1,17 @@
-/*
- ----- BEGIN LICENSE BLOCK -----
- This Source Code Form is subject to the terms of the Mozilla Public License, v.2.0.
- If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
- ----- END LICENSE BLOCK -----
- */
 package org.pharmgkb.common.io.util;
 
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
+import java.nio.file.Path;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 import com.google.common.io.Closeables;
 import org.apache.commons.lang3.StringUtils;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,10 +33,13 @@ public class StaxReader implements Closeable, AutoCloseable {
   private XMLStreamReader m_xmlReader;
 
 
-  public StaxReader(@Nonnull File file) throws IOException {
+  public StaxReader(File file) throws IOException {
+    this(file.toPath());
+  }
 
+  public StaxReader(Path file) throws IOException {
     try {
-      m_inputStream = StreamUtils.openInputStream(file.toPath());
+      m_inputStream = StreamUtils.openInputStream(file);
       m_xmlReader = XMLInputFactory.newInstance().createXMLStreamReader(m_inputStream);
     } catch (XMLStreamException ex) {
       throw new IOException("Error reading " + file, ex);
@@ -124,14 +121,14 @@ public class StaxReader implements Closeable, AutoCloseable {
   /**
    * Proceeds to the next start element with the given name.
    */
-  public @Nullable StaxReader startElement(@Nonnull String name) throws XMLStreamException {
+  public @Nullable StaxReader startElement(String name) throws XMLStreamException {
     return startElement(name, null);
   }
 
   /**
    * Proceeds to the next start element with the given name, unless the closing parent element is encountered first.
    */
-  public @Nullable StaxReader startElement(@Nonnull String name, @Nullable String parentName) throws XMLStreamException {
+  public @Nullable StaxReader startElement(String name, @Nullable String parentName) throws XMLStreamException {
     while (m_xmlReader.hasNext()) {
       int code = m_xmlReader.next();
       switch (code) {
@@ -153,8 +150,8 @@ public class StaxReader implements Closeable, AutoCloseable {
    * Proceeds to the next start element with the given name, unless a start element in <code>untilStartNames</code> is
    * encountered or the closing parent element is encountered.
    */
-  public @Nullable StaxReader startElementUnless(@Nonnull String name, @Nullable String parentName,
-      @Nonnull String... untilStartNames) throws XMLStreamException {
+  public @Nullable StaxReader startElementUnless(String name, @Nullable String parentName,
+      String... untilStartNames) throws XMLStreamException {
     while (m_xmlReader.hasNext()) {
       int code = m_xmlReader.next();
       switch (code) {
@@ -182,7 +179,7 @@ public class StaxReader implements Closeable, AutoCloseable {
   /**
    * Proceed to the next end element with the given name.
    */
-  public @Nullable StaxReader endElement(@Nonnull String name) throws XMLStreamException {
+  public @Nullable StaxReader endElement(String name) throws XMLStreamException {
     while (m_xmlReader.hasNext()) {
       if (m_xmlReader.next() == XMLEvent.END_ELEMENT && name.equals(m_xmlReader.getLocalName())) {
         return this;
