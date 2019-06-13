@@ -23,5 +23,6 @@
     <orderEntry type="library" exported="" name="Google API Client" level="project" />
     <orderEntry type="library" exported="" name="Google Data" level="project" />
     <orderEntry type="library" exported="" name="HttpComponents Client" level="project" />
+    <orderEntry type="library" exported="" name="CheckerFramework Annotations" level="project" />
   </component>
 </module>
