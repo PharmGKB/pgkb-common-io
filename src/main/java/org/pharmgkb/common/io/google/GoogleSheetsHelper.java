@@ -47,7 +47,7 @@ public class GoogleSheetsHelper implements AutoCloseable {
   public GoogleSheetsHelper(@Nonnull String userId, @Nonnull String privateKey, @Nonnull String service)
       throws IOException, GeneralSecurityException {
 
-    m_googleApiHelper = new GoogleApiHelper(userId, privateKey, SHEETS_SCOPE);
+    m_googleApiHelper = new GoogleApiHelper(userId, privateKey, null, SHEETS_SCOPE);
     m_isPersonalApiHelper = true;
     m_sheetsService = new SpreadsheetService(service);
     m_sheetsService.setOAuth2Credentials(m_googleApiHelper.getCredential());
@@ -55,7 +55,7 @@ public class GoogleSheetsHelper implements AutoCloseable {
 
 
   public GoogleSheetsHelper(@Nonnull GoogleApiHelper apiHelper, @Nonnull String service)
-      throws IOException, GeneralSecurityException {
+      throws IOException {
 
     m_googleApiHelper = apiHelper;
     m_sheetsService = new SpreadsheetService(service);

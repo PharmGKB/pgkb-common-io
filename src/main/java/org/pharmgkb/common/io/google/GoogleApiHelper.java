@@ -14,7 +14,6 @@ import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.xml.bind.DatatypeConverter;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
@@ -24,6 +23,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.slf4j.LoggerFactory;
 
 
@@ -42,22 +42,28 @@ public class GoogleApiHelper implements AutoCloseable {
 
 
   /**
-   * Constructs a {@link GoogleCredential}.
+   * Initializes resources required to access Google API services.
    */
-  public GoogleApiHelper(@Nonnull String userId, @Nonnull String privateKey, String... scopes)
+  public GoogleApiHelper(String apiUser, String apiKey, @Nullable String accountUser, String... scopes)
       throws IOException, GeneralSecurityException {
 
-    Preconditions.checkNotNull(userId);
-    Preconditions.checkNotNull(privateKey);
+    Preconditions.checkNotNull(apiUser);
+    Preconditions.checkNotNull(apiKey);
+    Preconditions.checkNotNull(scopes) ;
+    Preconditions.checkArgument(scopes.length > 0);
+
     m_jsonFactory = GsonFactory.getDefaultInstance();
     m_httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-    m_credential = new GoogleCredential.Builder()
+    GoogleCredential.Builder credBuilder = new GoogleCredential.Builder()
         .setTransport(m_httpTransport)
         .setJsonFactory(m_jsonFactory)
-        .setServiceAccountId(userId)
-        .setServiceAccountPrivateKey(getPrivateKey(privateKey))
-        .setServiceAccountScopes(Lists.newArrayList(scopes))
-        .build();
+        .setServiceAccountId(apiUser)
+        .setServiceAccountPrivateKey(getPrivateKey(apiKey))
+        .setServiceAccountScopes(Lists.newArrayList(scopes));
+    if (accountUser != null) {
+      credBuilder.setServiceAccountUser(accountUser);
+    }
+    m_credential = credBuilder.build();
   }
 
   @Override
