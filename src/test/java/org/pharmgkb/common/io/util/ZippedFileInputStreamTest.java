@@ -1,17 +1,11 @@
-/*
- ----- BEGIN LICENSE BLOCK -----
- This Source Code Form is subject to the terms of the Mozilla Public License, v.2.0.
- If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
- ----- END LICENSE BLOCK -----
- */
 package org.pharmgkb.common.io.util;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 /**
@@ -19,11 +13,11 @@ import static org.junit.Assert.assertEquals;
  *
  * @author Mark Woon
  */
-public class ZippedFileInputStreamTest {
+class ZippedFileInputStreamTest {
 
 
   @Test
-  public void testStream() throws Exception {
+  void testStream() throws Exception {
 
     String zipFilename = "ZippedFileInputStreamTest.txt.zip";
     String filename = "ZippedFileInputStreamTest.txt";

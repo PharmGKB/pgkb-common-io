@@ -1,9 +1,3 @@
-/*
- ----- BEGIN LICENSE BLOCK -----
- This Source Code Form is subject to the terms of the Mozilla Public License, v.2.0.
- If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
- ----- END LICENSE BLOCK -----
- */
 package org.pharmgkb.common.io.google;
 
 import java.io.IOException;
@@ -15,7 +9,6 @@ import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.annotation.Nonnull;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
 import com.google.gdata.data.spreadsheet.CellEntry;
 import com.google.gdata.data.spreadsheet.CellFeed;
@@ -44,7 +37,7 @@ public class GoogleSheetsHelper implements AutoCloseable {
   private SpreadsheetService m_sheetsService;
 
 
-  public GoogleSheetsHelper(@Nonnull String userId, @Nonnull String privateKey, @Nonnull String service)
+  public GoogleSheetsHelper(String userId, String privateKey, String service)
       throws IOException, GeneralSecurityException {
 
     m_googleApiHelper = new GoogleApiHelper(userId, privateKey, null, SHEETS_SCOPE);
@@ -54,7 +47,7 @@ public class GoogleSheetsHelper implements AutoCloseable {
   }
 
 
-  public GoogleSheetsHelper(@Nonnull GoogleApiHelper apiHelper, @Nonnull String service)
+  public GoogleSheetsHelper(GoogleApiHelper apiHelper, String service)
       throws IOException {
 
     m_googleApiHelper = apiHelper;
@@ -163,7 +156,7 @@ public class GoogleSheetsHelper implements AutoCloseable {
     }
   }
 
-  private void exportToTsv(@Nonnull WorksheetEntry worksheet, @Nonnull Path tsvFile) throws IOException,
+  private void exportToTsv(WorksheetEntry worksheet, Path tsvFile) throws IOException,
       ServiceException {
 
     int colCount = worksheet.getColCount();

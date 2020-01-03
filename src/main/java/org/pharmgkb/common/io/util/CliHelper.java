@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
-import javax.annotation.Nonnull;
 import com.google.common.collect.Lists;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -29,8 +28,8 @@ public class CliHelper {
   private static final String sf_helpFlag = "help";
   private String m_name;
   /**
-   * Shadow collection of options with nothing required so that we can check if help was requested without hitting a
-   * parse excpetion.
+   * Shadow collection of options with nothing required so that we can check if help was requested
+   * without hitting a parsing exception.
    */
   private Options m_helpOptions = new Options();
   private Options m_options = new Options();
@@ -57,7 +56,7 @@ public class CliHelper {
   }
 
 
-  public CliHelper addOption(@Nonnull Option option) {
+  public CliHelper addOption(Option option) {
 
     if (option.getArgName().equals("h") || option.getArgName().equals("v")) {
       throw new IllegalArgumentException("-h and -v are reserved arguments");
@@ -74,7 +73,7 @@ public class CliHelper {
   /**
    * Add a boolean option (aka a flag).
    */
-  public CliHelper addOption(@Nonnull String shortName, String longName, @Nonnull String description) {
+  public CliHelper addOption(String shortName, String longName, String description) {
 
     if (shortName.equals("h") || shortName.equals("v")) {
       throw new IllegalArgumentException("-h and -v are reserved arguments");
@@ -92,8 +91,8 @@ public class CliHelper {
   /**
    * Adds an option that takes a required argument.
    */
-  public CliHelper addOption(@Nonnull String shortName, String longName, @Nonnull String description,
-      boolean isOptionRequired, @Nonnull String argName) {
+  public CliHelper addOption(String shortName, String longName, String description,
+      boolean isOptionRequired, String argName) {
     return addOption(shortName, longName, description, isOptionRequired, argName, 1, true);
   }
 
@@ -102,8 +101,8 @@ public class CliHelper {
    *
    * @param numArgs 0 if argument(s) are optional, otherwise the number of expected arguments
    */
-  public CliHelper addOption(@Nonnull String shortName, String longName, @Nonnull String description,
-      boolean isOptionRequired, @Nonnull String argName, int numArgs, boolean argsAreRequired) {
+  public CliHelper addOption(String shortName, String longName, String description,
+      boolean isOptionRequired, String argName, int numArgs, boolean argsAreRequired) {
 
     if (shortName.equals("h") || shortName.equals("v")) {
       throw new IllegalArgumentException("-h and -v are reserved arguments");
@@ -115,8 +114,8 @@ public class CliHelper {
   }
 
 
-  private Option buildOption(@Nonnull String shortName, String longName, @Nonnull String description,
-      boolean isOptionRequired, @Nonnull String argName, int numArgs, boolean argsAreRequired) {
+  private Option buildOption(String shortName, String longName, String description,
+      boolean isOptionRequired, String argName, int numArgs, boolean argsAreRequired) {
 
     Option.Builder optBuilder = Option.builder(shortName)
         .longOpt(longName)
@@ -226,7 +225,7 @@ public class CliHelper {
    * @return the directory
    * @throws IllegalStateException if directory doesn't exist
    */
-  public @Nonnull Path getValidDirectory(String opt, boolean createIfNotExist) throws IOException {
+  public Path getValidDirectory(String opt, boolean createIfNotExist) throws IOException {
 
     Path dir = Paths.get(getValue(opt));
     if (Files.exists(dir)) {
@@ -247,7 +246,7 @@ public class CliHelper {
    *
    * @throws IllegalStateException if option was not specified
    */
-  public @Nonnull Path getPath(@Nonnull String opt) {
+  public Path getPath(String opt) {
 
     if (!hasOption(opt)) {
       throw new IllegalStateException("Missing option '" + opt + "'");
@@ -260,7 +259,7 @@ public class CliHelper {
    *
    * @throws IllegalStateException if file doesn't exist
    */
-  public @Nonnull Path getValidFile(@Nonnull String opt, boolean mustExist) {
+  public Path getValidFile(String opt, boolean mustExist) {
     Path p = getPath(opt);
     if (!Files.exists(p)) {
       if (mustExist) {

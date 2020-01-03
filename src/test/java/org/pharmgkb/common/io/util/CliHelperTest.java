@@ -1,8 +1,8 @@
 package org.pharmgkb.common.io.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
@@ -10,11 +10,11 @@ import static org.junit.Assert.*;
  * 
  * @author Mark Woon
  */
-public class CliHelperTest {
+class CliHelperTest {
 
 
   @Test
-  public void testHelp() {
+  void testHelp() {
 
     CliHelper ch = new CliHelper(CliHelperTest.class);
     ch.addOption("d", "directory", "directory", true, "dir");
@@ -35,12 +35,11 @@ public class CliHelperTest {
 
 
   @Test
-  public void testNoArgs() {
+  void testNoArgs() {
 
     CliHelper ch = new CliHelper(CliHelperTest.class);
     ch.addOption("d", "directory", "directory", true, "dir");
 
-    //noinspection ConstantConditions
     assertFalse(ch.parse(null));
     assertFalse(ch.isHelpRequested());
     assertTrue(ch.hasError());
@@ -49,7 +48,7 @@ public class CliHelperTest {
 
 
   @Test
-  public void testUnknownArg() {
+  void testUnknownArg() {
 
     CliHelper ch = new CliHelper(CliHelperTest.class);
     ch.addOption("d", "directory", "directory", true, "dir");
@@ -62,7 +61,7 @@ public class CliHelperTest {
 
 
   @Test
-  public void testGotDir() {
+  void testGotDir() {
 
     CliHelper ch = new CliHelper(CliHelperTest.class);
     ch.addOption("d", "directory", "directory desc", true, "dir");
@@ -75,7 +74,7 @@ public class CliHelperTest {
 
 
   @Test
-  public void testRequiredParam() {
+  void testRequiredParam() {
 
     CliHelper ch = new CliHelper(CliHelperTest.class);
     ch.addOption("d", "directory", "directory", true, "dir");

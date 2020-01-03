@@ -1,9 +1,3 @@
-/*
- ----- BEGIN LICENSE BLOCK -----
- This Source Code Form is subject to the terms of the Mozilla Public License, v.2.0.
- If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
- ----- END LICENSE BLOCK -----
- */
 package org.pharmgkb.common.io.util;
 
 import java.io.BufferedReader;
@@ -19,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.util.zip.GZIPInputStream;
-import javax.annotation.Nonnull;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -47,7 +40,7 @@ public class StreamUtils {
    * Opens an {@link InputStream} to the specified file.
    * Automatically unwraps .gz or .zip files.
    */
-  public static @Nonnull InputStream openInputStream(@Nonnull Path path) throws IOException {
+  public static InputStream openInputStream(Path path) throws IOException {
 
     if (!Files.exists(path)) {
       throw new NoSuchFileException("File does not exist");
@@ -70,7 +63,7 @@ public class StreamUtils {
    * Opens an {@link Reader} to the specified file.
    * Automatically unwraps .gz or .zip files.
    */
-  public static @Nonnull BufferedReader openReader(@Nonnull Path path) throws IOException {
+  public static BufferedReader openReader(Path path) throws IOException {
 
     if (!Files.exists(path)) {
       throw new NoSuchFileException("File does not exist");
@@ -95,13 +88,13 @@ public class StreamUtils {
    *
    * Use this instead of {@link FileUtils#copyURLToFile(URL, File)} when you need to follow redirects.
    */
-  public static void copyUrlToFile(@Nonnull String url, @Nonnull Path file) throws IOException {
+  public static void copyUrlToFile(String url, Path file) throws IOException {
 
     if (url.startsWith("http://") || url.startsWith("https://")) {
       try (CloseableHttpClient httpClient = HttpClientBuilder.create().setRedirectStrategy(new LaxRedirectStrategy()).build()) {
         HttpGet httpget = new HttpGet(url);
         try (CloseableHttpResponse response = httpClient.execute(httpget)) {
-          // save to file even if there's an error so we can see what the error is
+          // save to file even if there's an error, so we can see what the error is
           try (InputStream in = response.getEntity().getContent();
                OutputStream out = Files.newOutputStream(file)) {
             IOUtils.copy(in, out);
