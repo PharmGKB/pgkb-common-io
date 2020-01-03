@@ -24,5 +24,6 @@
     <orderEntry type="library" exported="" name="Google Data" level="project" />
     <orderEntry type="library" exported="" name="HttpComponents Client" level="project" />
     <orderEntry type="library" exported="" name="CheckerFramework Annotations" level="project" />
+    <orderEntry type="library" scope="TEST" name="BouncyCastle" level="project" />
   </component>
 </module>
