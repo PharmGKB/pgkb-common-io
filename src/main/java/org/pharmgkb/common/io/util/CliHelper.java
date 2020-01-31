@@ -16,6 +16,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.lang3.StringUtils;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 
 /**
@@ -194,7 +195,7 @@ public class CliHelper {
    * @param opt the name of the option
    * @return Value of the argument if option is set, and has an argument, otherwise null.
    */
-  public String getValue(String opt) {
+  public @Nullable String getValue(String opt) {
     return StringUtils.stripToNull(m_commandLine.getOptionValue(opt));
   }
 
@@ -221,13 +222,17 @@ public class CliHelper {
    * Gets the value for the given option as a {@link File}.
    *
    * @param createIfNotExist if true and directory doesn't exist, create the directory;
-   * otherwise, if false and directory doesn't exist, throw IllegalStateException
+   * otherwise, if false and directory doesn't exist, throw IllegalArgumentException
    * @return the directory
-   * @throws IllegalStateException if directory doesn't exist
+   * @throws IllegalArgumentException if option was not specified or directory doesn't exist
    */
   public Path getValidDirectory(String opt, boolean createIfNotExist) throws IOException {
 
-    Path dir = Paths.get(getValue(opt));
+    String val = getValue(opt);
+    if (val == null) {
+      throw new IllegalArgumentException("Missing option '" + opt + "'");
+    }
+    Path dir = Paths.get(val);
     if (Files.exists(dir)) {
       if (Files.isDirectory(dir)) {
         return dir;
@@ -237,37 +242,38 @@ public class CliHelper {
       Files.createDirectories(dir);
       return dir;
     }
-    throw new IllegalStateException("No such directory: " + dir);
+    throw new IllegalArgumentException("No such directory: " + dir);
   }
 
 
   /**
    * Gets the value for the given option as a {@link Path}.
    *
-   * @throws IllegalStateException if option was not specified
+   * @throws IllegalArgumentException if option was not specified
    */
   public Path getPath(String opt) {
 
-    if (!hasOption(opt)) {
-      throw new IllegalStateException("Missing option '" + opt + "'");
+    String val = getValue(opt);
+    if (val == null) {
+      throw new IllegalArgumentException("Missing option '" + opt + "'");
     }
-    return Paths.get(getValue(opt));
+    return Paths.get(val);
   }
 
   /**
    * Gets the value for the given option as a {@link Path}, that must point to an existing file.
    *
-   * @throws IllegalStateException if file doesn't exist
+   * @throws IllegalArgumentException if file doesn't exist
    */
   public Path getValidFile(String opt, boolean mustExist) {
     Path p = getPath(opt);
     if (!Files.exists(p)) {
       if (mustExist) {
-        throw new IllegalStateException("File '" + p.toString() + "' does not exist");
+        throw new IllegalArgumentException("File '" + p.toString() + "' does not exist");
       }
     } else {
       if (!Files.isRegularFile(p)) {
-        throw new IllegalStateException("Not a file: '" + p.toString());
+        throw new IllegalArgumentException("Not a file: '" + p.toString());
       }
     }
     return p;
@@ -298,9 +304,9 @@ public class CliHelper {
   }
 
   /**
-   * Gets the error that occured while parsing arguments.
+   * Gets the error that occurred while parsing arguments.
    */
-  public String getError() {
+  public @Nullable String getError() {
     return m_error;
   }
 
