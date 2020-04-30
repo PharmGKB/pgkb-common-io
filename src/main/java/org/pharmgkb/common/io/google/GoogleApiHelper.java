@@ -9,7 +9,6 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.annotation.concurrent.ThreadSafe;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
@@ -23,10 +22,11 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This helper class handles the prep for using Google API.
+ * <p>
+ * This class is thread-safe.
  *
  * @author Mark Woon
  */
-@ThreadSafe
 public class GoogleApiHelper implements AutoCloseable {
   private static final Pattern sf_privateKeyPattern =
       Pattern.compile("-----BEGIN .*?PRIVATE KEY-----(.*)-----END .*?PRIVATE KEY-----");
