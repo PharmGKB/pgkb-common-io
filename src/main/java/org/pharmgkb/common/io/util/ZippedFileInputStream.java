@@ -1,10 +1,10 @@
 package org.pharmgkb.common.io.util;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -18,32 +18,33 @@ public class ZippedFileInputStream extends InputStream {
   private ZipInputStream m_zipInputStream;
 
 
-  public ZippedFileInputStream(File zipFile) throws IOException {
+  public ZippedFileInputStream(Path zipFile) throws IOException {
+    String zipFilename = zipFile.getName(zipFile.getNameCount() - 1).toString();
+    if (!zipFilename.toLowerCase().endsWith(".zip")) {
+      throw new IllegalArgumentException("File does not end with .zip");
+    }
 
-    m_zipInputStream = new ZipInputStream(new FileInputStream(zipFile));
-    String baseFilename = zipFile.getName().substring(0, zipFile.getName().length() - 4);
-    boolean foundFile = false;
-    ZipEntry entry;
-    while((entry = m_zipInputStream.getNextEntry()) != null) {
-      String fileName = entry.getName();
-      int idx = fileName.lastIndexOf("/");
-      if (idx != -1) {
-        fileName = fileName.substring(idx + 1);
-      }
-      System.out.println(fileName);
-      if (fileName.equals(baseFilename)) {
-        foundFile = true;
-        break;
-      }
+    String baseFilename = zipFilename.substring(0, zipFilename.length() - 4);
+    findFile(Files.newInputStream(zipFile), baseFilename);
+  }
+
+
+  public ZippedFileInputStream(Path zipFile, String filename) throws IOException {
+    String zipFilename = zipFile.getName(zipFile.getNameCount() - 1).toString();
+    if (!zipFilename.toLowerCase().endsWith(".zip")) {
+      throw new IllegalArgumentException("File does not end with .zip");
     }
-    if (!foundFile) {
-      throw new FileNotFoundException("Cannot find " + baseFilename + " in zipped file");
-    }
+
+    findFile(Files.newInputStream(zipFile), filename);
   }
 
 
   public ZippedFileInputStream(InputStream in, String filename) throws IOException {
+    findFile(in, filename);
+  }
 
+
+  private void findFile(InputStream in, String filename) throws IOException {
     if (in instanceof ZipInputStream) {
       m_zipInputStream = (ZipInputStream)in;
     } else {
@@ -61,6 +62,7 @@ public class ZippedFileInputStream extends InputStream {
       throw new FileNotFoundException("Cannot find " + filename + " in zipped file");
     }
   }
+
 
 
 
