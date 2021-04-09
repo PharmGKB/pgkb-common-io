@@ -22,3 +22,7 @@ This package contains common IO code shared among all PharmGKB projects.
   ...
 </dependencies>
 ```
+
+### Non-Maven
+
+For use cases that do not automatically resolve dependencies from Maven repositories, you can still download jars from the [Central Maven repository](https://search.maven.org/search?q=a:pgkb-common-io).
