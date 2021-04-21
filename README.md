@@ -1,8 +1,8 @@
 # PharmGKB Common IO
 
-[![Build Status](https://travis-ci.org/PharmGKB/pgkb-common-io.svg?branch=master)](https://travis-ci.org/PharmGKB/pgkb-common-io)
-[![codecov.io](https://codecov.io/github/PharmGKB/pgkb-common-io/coverage.svg?branch=master)](https://codecov.io/github/PharmGKB/pgkb-common-io?branch=master)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.pharmgkb/pgkb-common-io/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.pharmgkb/pgkb-common-io)
+
+<strong>This package is no longer being maintained.</strong>  Most of it has been merged into [pgkb-common](https://github.com/PharmGKB/pgkb-common). 
 
 This package contains common IO code shared among all PharmGKB projects.
 
